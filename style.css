@@ -1,0 +1,267 @@
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --hue: 240;
+    --saturation: 100%;
+    --lightness: 50%;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100svh;
+    margin: 0;
+    padding: 24px 5px;
+
+    display: grid;
+    place-items: center;
+}
+
+.color-picker {
+    width: min(480px, 100%);
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+
+    container-type: inline-size;
+}
+
+.color-picker-container {
+    width: 100%;
+    aspect-ratio: 2 / 1;
+
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+}
+
+.color-picker-preview {
+    width: 100%;
+    height: 100%;
+    background-color: hsl(
+        var(--hue),
+        var(--saturation),
+        var(--lightness)
+    );
+}
+
+#color-picker-palette {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    position: relative;
+    touch-action: none;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.marker {
+    width: 20px;
+    height: 20px;
+    display: none;
+    border: 1.6px solid white;
+    background-color: hsl(
+        var(--hue),
+        var(--saturation),
+        var(--lightness)
+    );
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+}
+
+.hue-slider {
+    appearance: none;
+    border: 1.2px solid black;
+    border-radius: 16px;
+    background-image: linear-gradient(
+        to right,
+        red,
+        yellow,
+        green,
+        cyan,
+        blue,
+        magenta,
+        red
+    );
+
+    width: 100%;
+    height: 8px;
+    outline: none;
+}
+
+.hue-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.6px solid black;
+    background-color: hsl(var(--hue), 100%, 50%);
+    cursor: grab;
+}
+
+.hue-slider::-webkit-slider-thumb:active {
+    cursor: grabbing;
+}
+
+.display-area {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 4fr);
+    gap: 8px;
+}
+
+.color-picker-code-select-type {
+    border: 1.2px solid black;
+    border-radius: 8px;
+    width: 100%;
+    min-width: 0;
+    height: 32px;
+
+    display: flex;
+}
+
+.color-picker-code-container {
+    position: relative;
+    border: 1.2px solid black;
+    border-radius: 8px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    min-width: 0;
+    height: 32px;
+}
+
+.color-picker-code {
+    font-family: monospace;
+    font-size: clamp(0.6rem, 2.5vw, 0.9rem);
+    letter-spacing: clamp(0.2px, 0.5vw, 2.4px);
+    white-space: nowrap;
+    margin: 0;
+    max-width: 100%;
+}
+
+.icon {
+    position: absolute;
+    right: 1%;
+    top: 18%;
+    background-color: transparent;
+    border: none;
+}
+
+.icon:hover span {
+    opacity: 60%;
+}
+
+.color-code-type {
+    height: 100%;
+    width: 70%;
+    border-right: 1.2px solid black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: clamp(0.6rem, 3cqi, 0.96rem);
+    letter-spacing: 1.1px;
+}
+
+.color-code-dropdown {
+    position: relative;
+    height: 100%;
+    width: 30%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: clamp(0.2rem, 3cqi, 0.6rem);
+}
+
+.color-code-dropdown:hover .code-options-area {
+    display: flex;
+}
+
+.color-code-dropdown span {
+    transition: 0.5s ease;
+}
+
+.color-code-dropdown:hover span {
+    transform: rotate(-90deg);
+    color: hsl(var(--hue), 100%, 50%);
+}
+
+/* FORMAT OPTIONS */
+
+.code-options-area {
+    position: absolute;
+    min-height: 100px;
+    height: auto;
+    width: 100px;
+    border: 1.2px solid black;
+    border-radius: 8px;
+    top: calc(100% + 10px);
+    left: 0;
+
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: white;
+    z-index: 10;
+}
+
+.code-options-area::before {
+    content: "";
+    position: absolute;
+    height: 20px;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+}
+
+.code-options {
+    width: 100%;
+    height: 33.34px;
+    padding: 0 0 0 15px;
+    margin: 0;
+    font-size: 1.2em;
+    border-bottom: 1px solid grey;
+    cursor: pointer;
+}
+
+.code-options p {
+    font-size: 1.1em;
+    transition: 0.3s ease;
+}
+
+#code-in-rgb {
+    border-bottom: none;
+}
+
+.code-options:hover {
+    opacity: 60%;
+}
+
+.code-options:hover p {
+    transform: translate(6px);
+}
+
+.icon .material-symbols-outlined {
+    font-size: clamp(1rem, 4cqi, 1.4rem);
+}
+
+.color-code-dropdown .material-symbols-outlined {
+    font-size: clamp(1.2rem, 2.5cqi, 2rem);
+}

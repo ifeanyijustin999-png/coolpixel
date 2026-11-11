@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Coolpixel</title>
+
+    <meta property="og:title" content="Coolpixel">
+    <meta property="og:url" content="https://coolpixel.vercel.app">
+    <meta property="og:description" content="Find stunning colors to use in your projects, creating like an artist as you choose">
+    <meta property="og:image" content="https://coolpixel.vercel.app/ogimage1.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Coolpixel">
+    <meta name="twitter:description" content="Find stunning colors to use in your projects, creating like an artist as you choose">
+    <meta name="twitter:image" content="https://coolpixel.vercel.app/ogimage1.png">
+    
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="favicon.png?v=2">
+</head>
+
+<body>
+    <div class="color-picker">
+        <div class="color-picker-container">
+            <div class="color-picker-preview"></div>
+            <div id="color-picker-palette">
+                <canvas width="290" height="240"></canvas>
+                <div class="marker"></div>
+            </div>
+        </div>
+
+        <input type="range" class="hue-slider" min="0" max="360" value="240">
+
+        <div class="display-area">
+
+            <div class="color-picker-code-select-type">
+                <div class="color-code-type">HSL</div>
+                <div class="color-code-dropdown">
+                    <span class="material-symbols-outlined">
+                        stat_minus_1
+                    </span>
+
+                    <div class="code-options-area">
+                        <div class="code-options" id="code-in-hsl">
+                            <p>HSL</p>
+                        </div>
+                        <div class="code-options" id="code-in-hex">
+                            <p>HEX</p>
+                        </div>
+                        <div class="code-options" id="code-in-rgb">
+                            <p>RGB</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="color-picker-code-container">
+                <p class="color-picker-code">hsl(240, 100%, 50%)</p>
+
+                <button class="icon">
+                    <span class="material-symbols-outlined">
+                        content_copy
+                    </span>
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>
