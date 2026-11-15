@@ -203,10 +203,10 @@ copyIcon.addEventListener("click", copyCodeValue);
 function copyCodeValue() {
     navigator.clipboard.writeText(colorCode.textContent)
         .then(() => {
-            copyIcon.innerHTML = '<span class="material-symbols-outlined">check</span>';
-
             if(copyIcon.innerHTML !== '<span class="material-symbols-outlined">content_copy</span>') return;
-
+            copyIcon.innerHTML = '<span class="material-symbols-outlined">check</span>'; 
+        })
+        .then(() => {
             setTimeout(() => {
                 copyIcon.innerHTML = '<span class="material-symbols-outlined">content_copy</span>'
             }, 1500)
