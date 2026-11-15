@@ -205,6 +205,8 @@ function copyCodeValue() {
         .then(() => {
             copyIcon.innerHTML = '<span class="material-symbols-outlined">check</span>';
 
+            if(copyIcon.innerHTML !== '<span class="material-symbols-outlined">content_copy</span>') return;
+
             setTimeout(() => {
                 copyIcon.innerHTML = '<span class="material-symbols-outlined">content_copy</span>'
             }, 1500)
