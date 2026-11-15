@@ -31,10 +31,22 @@ const selectedColor = {
 
 let dragging = false;
 
-initiatizeCanvas()
-function initiatizeCanvas() {
+document.addEventListener("DOMContentLoaded", () => {
+    drawPaletteCanvas();
     updateCodeDisplayInHSL();
+})
 
+slider.addEventListener("input", event => {
+    const newHueValue = event.target.value;
+    root.style.setProperty("--hue", newHueValue);
+
+    selectedColor.hue = newHueValue;
+
+    drawPaletteCanvas();
+    getPaletteValue(selectedColor.x, selectedColor.y);
+});
+
+function drawPaletteCanvas() {
     const hue = getComputedStyle(root).getPropertyValue("--hue");
     const hueColor = `hsl(${hue}, 100%, 50%)`;
 
@@ -57,32 +69,16 @@ palette.addEventListener("pointerdown", event => {
     dragging = true;
 
     palette.setPointerCapture(event.pointerId);
-
-    const rect = palette.getBoundingClientRect();
-
-    let localX = event.clientX - rect.left;
-    let localY = event.clientY - rect.top;
-
-    localX = Math.max(0, Math.min(localX, rect.width - 1));
-    localY = Math.max(0, Math.min(localY, rect.height - 1));
-
-    let x = Math.floor(localX * canvas.width / rect.width);
-    let y = Math.floor(localY * canvas.height / rect.height);
-
-    console.log(canvas.height / rect.height)
-
-    selectedColor.x = x;
-    selectedColor.y = y;
-    marker.style.display = "block";
-    marker.style.left = `${localX - 10}px`;
-    marker.style.top = `${localY - 10}px`;
-
-    getPaletteValue(x, y);
+    calculatePaletteLocation(event);
 });
 
 palette.addEventListener("pointermove", event => {
     if (!dragging) return;
 
+    calculatePaletteLocation(event);
+});
+
+function calculatePaletteLocation (event){
     const rect = palette.getBoundingClientRect();
 
     let localX = event.clientX - rect.left;
@@ -102,7 +98,7 @@ palette.addEventListener("pointermove", event => {
     marker.style.top = `${localY - 10}px`;
 
     getPaletteValue(x, y);
-});
+}
 
 palette.addEventListener("pointerup", event => {
     dragging = false;
@@ -162,6 +158,8 @@ function calculateValue(data) {
 }
 
 hslButton.addEventListener("click", updateCodeDisplayInHSL);
+rgbButton.addEventListener("click", updateCodeDisplayInRGB);
+hexButton.addEventListener("click", updateCodeDisplayInHEX);
 
 function updateCodeDisplayInHSL() {
     selectedFormat = "hsl";
@@ -177,8 +175,6 @@ function updateCodeDisplayInHSL() {
     colorCodeType.textContent = "HSL"
 }
 
-rgbButton.addEventListener("click", updateCodeDisplayInRGB);
-
 function updateCodeDisplayInRGB() {
     selectedFormat = "rgb";
 
@@ -189,8 +185,6 @@ function updateCodeDisplayInRGB() {
     colorCode.textContent = `rgb(${r}, ${g}, ${b})`;
     colorCodeType.textContent = "RGB";
 }
-
-hexButton.addEventListener("click", updateCodeDisplayInHEX)
 
 function updateCodeDisplayInHEX() {
     selectedFormat = "hex";
@@ -203,37 +197,6 @@ function updateCodeDisplayInHEX() {
     colorCodeType.textContent = "HEX";
     colorCode.textContent = selectedColor.hex;
 }
-
-function updatePaletteHue() {
-    const hue = getComputedStyle(root).getPropertyValue("--hue");
-    const hueColor = `hsl(${hue}, 100%, 50%)`;
-
-    const gradient1 = ctx.createLinearGradient(0, 0.5, 0, canvas.height - 0.5);
-    gradient1.addColorStop(0, "transparent");
-    gradient1.addColorStop(1, "black");
-
-    const gradient2 = ctx.createLinearGradient(0.5, 0, canvas.width - 0.5, 0);
-    gradient2.addColorStop(0, "white");
-    gradient2.addColorStop(1, hueColor);
-
-    ctx.fillStyle = gradient2;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = gradient1;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-}
-
-slider.addEventListener("input", event => {
-
-    const newHueValue = event.target.value;
-    root.style.setProperty("--hue", newHueValue);
-
-    selectedColor.hue = newHueValue;
-
-    updatePaletteHue();
-
-    getPaletteValue(selectedColor.x, selectedColor.y);
-});
 
 copyIcon.addEventListener("click", copyCodeValue);
 
