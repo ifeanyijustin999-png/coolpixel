@@ -11,7 +11,9 @@ const rgbButton = document.getElementById("code-in-rgb");
 const hexButton = document.getElementById("code-in-hex");
 const hslButton = document.getElementById("code-in-hsl");
 const colorCodeType = document.querySelector(".color-code-type");
+const dropdown = document.querySelector(".color-code-dropdown");
 
+let dropdownOpen = false;
 let selectedFormat = "hsl";
 
 const selectedColor = {
@@ -157,9 +159,20 @@ function calculateValue(data) {
     }
 }
 
-hslButton.addEventListener("click", updateCodeDisplayInHSL);
-rgbButton.addEventListener("click", updateCodeDisplayInRGB);
-hexButton.addEventListener("click", updateCodeDisplayInHEX);
+hslButton.addEventListener("click", () => {
+    updateCodeDisplayInHSL();
+    closeDropdown();
+});
+
+rgbButton.addEventListener("click", () => {
+    updateCodeDisplayInRGB();
+    closeDropdown();
+});
+
+hexButton.addEventListener("click", () => {
+    updateCodeDisplayInHEX();
+    closeDropdown();
+});
 
 function updateCodeDisplayInHSL() {
     selectedFormat = "hsl";
@@ -198,15 +211,55 @@ function updateCodeDisplayInHEX() {
     colorCode.textContent = selectedColor.hex;
 }
 
+function openDropdown() {
+    dropdown.classList.add("active");
+    dropdownOpen = true;
+}
+
+function closeDropdown() {
+    dropdown.classList.remove("active");
+    dropdownOpen = false;
+}
+
+dropdown.addEventListener("mouseenter", () => {
+    if (window.matchMedia("(hover: hover)").matches) {
+        openDropdown();
+    }
+});
+
+dropdown.addEventListener("mouseleave", () => {
+    if (window.matchMedia("(hover: hover)").matches) {
+        closeDropdown();
+    }
+});
+
+dropdown.addEventListener("click", event => {
+    if (event.target.closest(".code-options")) return;
+
+    event.stopPropagation();
+
+    if (dropdownOpen) {
+        closeDropdown();
+    } else {
+        openDropdown();
+    }
+});
+
+document.addEventListener("click", event => {
+    if (!dropdown.contains(event.target)) {
+        closeDropdown();
+    }
+});
+
 copyIcon.addEventListener("click", copyCodeValue);
 
 function copyCodeValue() {
     navigator.clipboard.writeText(colorCode.textContent)
         .then(() => {
+            copyIcon.innerHTML = '<span class="material-symbols-outlined">check</span>';
+
             if(copyIcon.innerHTML !== '<span class="material-symbols-outlined">content_copy</span>') return;
-            copyIcon.innerHTML = '<span class="material-symbols-outlined">check</span>'; 
-        })
-        .then(() => {
+
             setTimeout(() => {
                 copyIcon.innerHTML = '<span class="material-symbols-outlined">content_copy</span>'
             }, 1500)
