@@ -186,17 +186,11 @@ canvas {
     align-items: center;
 
     font-size: clamp(0.2rem, 3cqi, 0.6rem);
+    cursor: pointer;
 }
 
-.color-code-dropdown:hover .code-options-area {
-    display: flex;
-}
 
-.color-code-dropdown span {
-    transition: 0.5s ease;
-}
-
-.color-code-dropdown:hover span {
+.color-code-dropdown.active span {
     transform: rotate(-90deg);
     color: hsl(var(--hue), 100%, 50%);
 }
@@ -213,13 +207,34 @@ canvas {
     top: calc(100% + 10px);
     left: 0;
 
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 
     background-color: white;
     z-index: 10;
+
+    /* Initial hidden state */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateY(-8px) scale(0.97);
+    transform-origin: top left;
+
+    transition:
+        opacity 0.22s ease,
+        transform 0.22s ease,
+        visibility 0.22s ease;
+}
+
+.color-code-dropdown.active .code-options-area {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: translateY(0) scale(1);
 }
 
 .code-options-area::before {
